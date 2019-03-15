@@ -14,6 +14,7 @@ repositories {
 dependencies {
     compile 'io.specto:hoverfly-java:0.11.2'
     testCompile 'junit:junit:4.12'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
     testCompile 'org.assertj:assertj-core:3.11.1'
     testCompile 'com.google.cloud:google-cloud-monitoring:1.38.0'
 }

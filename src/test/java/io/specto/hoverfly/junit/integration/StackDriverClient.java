@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.monitoring;
+package io.specto.hoverfly.junit.integration;
 
 import com.google.api.Metric;
 import com.google.api.MetricDescriptor;
@@ -37,7 +37,7 @@ import java.util.Map;
 // Imports the Google Cloud client library
 
 
-public class Snippets {
+public class StackDriverClient {
 
   private static final String CUSTOM_METRIC_DOMAIN = "custom.googleapis.com";
 
@@ -49,7 +49,7 @@ public class Snippets {
    */
   public static void main(String[] args) throws Exception {
 
-    Snippets snippets = new Snippets();
+    StackDriverClient stackDriverClient = new StackDriverClient();
     System.out.println("Stackdriver Monitoring snippets");
     System.out.println();
     printUsage();
@@ -59,7 +59,7 @@ public class Snippets {
         break;
       }
       try {
-        snippets.handleCommandLine(commandLine);
+        stackDriverClient.handleCommandLine(commandLine);
       } catch (IllegalArgumentException e) {
         System.out.println(e.getMessage());
         printUsage();
@@ -190,7 +190,7 @@ public class Snippets {
   /**
    * Demonstrates listing time series headers.
    */
-  void listTimeSeriesHeaders() throws IOException {
+  public void listTimeSeriesHeaders() throws IOException {
     // [START monitoring_read_timeseries_fields]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -223,7 +223,7 @@ public class Snippets {
   /**
    * Demonstrates listing time series using a filter.
    */
-  void listTimeSeries(String filter) throws IOException {
+  public void listTimeSeries(String filter) throws IOException {
     // [START monitoring_read_timeseries_simple]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -255,7 +255,7 @@ public class Snippets {
   /**
    * Demonstrates listing time series and aggregating them.
    */
-  void listTimeSeriesAggregrate() throws IOException {
+  public void listTimeSeriesAggregrate() throws IOException {
     // [START monitoring_read_timeseries_align]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -293,7 +293,7 @@ public class Snippets {
   /**
    * Demonstrates listing time series and aggregating and reducing them.
    */
-  void listTimeSeriesReduce() throws IOException {
+  public void listTimeSeriesReduce() throws IOException {
     // [START monitoring_read_timeseries_reduce]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -332,7 +332,7 @@ public class Snippets {
   /**
    * Returns the first page of all metric descriptors.
    */
-  void listMetricDescriptors() throws IOException {
+  public void listMetricDescriptors() throws IOException {
     // [START monitoring_list_descriptors]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");
@@ -357,7 +357,7 @@ public class Snippets {
   /**
    * Gets all monitored resource descriptors.
    */
-  void listMonitoredResources() throws IOException {
+  public void listMonitoredResources() throws IOException {
     // [START monitoring_list_resources]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");
@@ -386,7 +386,7 @@ public class Snippets {
    *
    * @param type The resource type
    */
-  void describeMonitoredResources(String type) throws IOException {
+  public void describeMonitoredResources(String type) throws IOException {
     // [START monitoring_get_descriptor]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");
