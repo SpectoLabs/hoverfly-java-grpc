@@ -190,7 +190,7 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series headers.
    */
-  public void listTimeSeriesHeaders() throws IOException {
+  void listTimeSeriesHeaders() throws IOException {
     // [START monitoring_read_timeseries_fields]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -223,7 +223,7 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series using a filter.
    */
-  public void listTimeSeries(String filter) throws IOException {
+  void listTimeSeries(String filter) throws IOException {
     // [START monitoring_read_timeseries_simple]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -255,7 +255,7 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series and aggregating them.
    */
-  public void listTimeSeriesAggregrate() throws IOException {
+  void listTimeSeriesAggregrate() throws IOException {
     // [START monitoring_read_timeseries_align]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -293,7 +293,7 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series and aggregating and reducing them.
    */
-  public void listTimeSeriesReduce() throws IOException {
+  void listTimeSeriesReduce() throws IOException {
     // [START monitoring_read_timeseries_reduce]
     MetricServiceClient metricServiceClient = MetricServiceClient.create();
     String projectId = System.getProperty("projectId");
@@ -332,7 +332,7 @@ public class StackDriverClient {
   /**
    * Returns the first page of all metric descriptors.
    */
-  public void listMetricDescriptors() throws IOException {
+  void listMetricDescriptors() throws IOException {
     // [START monitoring_list_descriptors]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");
@@ -357,7 +357,7 @@ public class StackDriverClient {
   /**
    * Gets all monitored resource descriptors.
    */
-  public void listMonitoredResources() throws IOException {
+  void listMonitoredResources() throws IOException {
     // [START monitoring_list_resources]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");
@@ -386,7 +386,7 @@ public class StackDriverClient {
    *
    * @param type The resource type
    */
-  public void describeMonitoredResources(String type) throws IOException {
+  void describeMonitoredResources(String type) throws IOException {
     // [START monitoring_get_descriptor]
     // Your Google Cloud Platform project ID
     String projectId = System.getProperty("projectId");

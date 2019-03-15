@@ -28,18 +28,13 @@ import java.io.PrintStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-/**
- * Tests for quickstart sample.
- */
-@RunWith(JUnit4.class)
-@SuppressWarnings("checkstyle:abbreviationaswordinname")
 public class StackDriverClientIT {
   private ByteArrayOutputStream bout;
   private PrintStream out;
   private static final String LEGACY_PROJECT_ENV_NAME = "GCLOUD_PROJECT";
   private static final String PROJECT_ENV_NAME = "GOOGLE_CLOUD_PROJECT";
 
-  private static String getProjectId() {
+  static String getProjectId() {
     String projectId = System.getProperty(PROJECT_ENV_NAME, System.getenv(PROJECT_ENV_NAME));
     if (projectId == null) {
       projectId = System.getProperty(LEGACY_PROJECT_ENV_NAME,
