@@ -16,11 +16,12 @@
 
 package io.specto.hoverfly.junit.integration;
 
+import io.specto.hoverfly.junit.core.HoverflyConfig;
+import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -55,9 +56,9 @@ public class StackDriverClientIT {
     System.setOut(null);
   }
 
-//  @ClassRule
-//  public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("test.json",
-//          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888).proxyLocalHost());
+  @ClassRule
+  public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("test.json",
+          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888).proxyLocalHost());
 
   @Test
   public void testListMetricsDescriptor() throws Exception {
