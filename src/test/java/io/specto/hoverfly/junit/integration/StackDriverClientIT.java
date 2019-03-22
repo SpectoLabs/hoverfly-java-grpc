@@ -57,8 +57,9 @@ public class StackDriverClientIT {
   }
 
   @ClassRule
-  public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("test.json",
-          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888).proxyLocalHost());
+  public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("stackdriver-api.json",
+          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888)
+                  .simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 
   @Test
   public void testListMetricsDescriptor() throws Exception {

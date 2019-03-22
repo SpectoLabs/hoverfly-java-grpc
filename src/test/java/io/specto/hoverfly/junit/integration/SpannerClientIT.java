@@ -15,9 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SpannerClientIT {
 
 
-//    @ClassRule
-//    public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureMode("test.json",
-//          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888).proxyLocalHost());
+    @ClassRule
+    public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("spanner-api.json",
+          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888)
+                  .simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 
     private SpannerClient spannerClient;
 
