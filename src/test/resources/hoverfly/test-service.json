@@ -1,0 +1,116 @@
+{
+	"data": {
+		"pairs": [
+			{
+				"request": {
+					"path": [
+						{
+							"matcher": "exact",
+							"value": "/api/bookings"
+						}
+					],
+					"method": [
+						{
+							"matcher": "exact",
+							"value": "POST"
+						}
+					],
+					"destination": [
+						{
+							"matcher": "exact",
+							"value": "www.my-test.com"
+						}
+					],
+					"scheme": [
+						{
+							"matcher": "exact",
+							"value": ""
+						}
+					],
+					"body": [
+						{
+							"matcher": "exact",
+							"value": "{\"flightId\": \"1\"}"
+						}
+					],
+					"deprecatedQuery": [
+						{
+							"matcher": "exact",
+							"value": ""
+						}
+					]
+				},
+				"response": {
+					"status": 201,
+					"body": "",
+					"encodedBody": false,
+					"headers": {
+						"Location": [
+							"http://localhost/api/bookings/1"
+						]
+					},
+					"templated": false
+				}
+			},
+			{
+				"request": {
+					"path": [
+						{
+							"matcher": "exact",
+							"value": "/api/bookings/1"
+						}
+					],
+					"method": [
+						{
+							"matcher": "exact",
+							"value": "GET"
+						}
+					],
+					"destination": [
+						{
+							"matcher": "exact",
+							"value": "www.my-test.com"
+						}
+					],
+					"scheme": [
+						{
+							"matcher": "exact",
+							"value": ""
+						}
+					],
+					"body": [
+						{
+							"matcher": "exact",
+							"value": ""
+						}
+					],
+					"deprecatedQuery": [
+						{
+							"matcher": "exact",
+							"value": ""
+						}
+					]
+				},
+				"response": {
+					"status": 200,
+					"body": "{\"bookingId\":\"1\",\"origin\":\"London\",\"destination\":\"Singapore\",\"time\":\"2011-09-01T12:30\",\"_links\":{\"self\":{\"href\":\"http://localhost/api/bookings/1\"}}}",
+					"encodedBody": false,
+					"headers": {
+						"Content-Type": [
+							"application/json"
+						]
+					},
+					"templated": false
+				}
+			}
+		],
+		"globalActions": {
+			"delays": []
+		}
+	},
+	"meta": {
+		"schemaVersion": "v5",
+		"hoverflyVersion": "v0.17.1",
+		"timeExported": "2018-06-29T23:11:10+01:00"
+	}
+}
