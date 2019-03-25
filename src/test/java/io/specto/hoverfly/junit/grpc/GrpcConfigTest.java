@@ -5,6 +5,7 @@ import io.specto.hoverfly.junit.core.config.HoverflyConfiguration;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class GrpcConfigTest {
 
@@ -15,5 +16,13 @@ public class GrpcConfigTest {
 
         assertThat(config.getBinaryNameFormat()).isEqualTo("hoverfly2_%s_%s%s");
 
+    }
+
+    @Test
+    public void shouldThrowExceptionIfTryingToSetWebServerMode() {
+
+        assertThatThrownBy(() -> new GrpcConfig().asWebServer().build())
+        .isInstanceOf(UnsupportedOperationException.class)
+        .hasMessageContaining("Webserver mode is not implemented for Hoverfly gRPC yet.");
     }
 }

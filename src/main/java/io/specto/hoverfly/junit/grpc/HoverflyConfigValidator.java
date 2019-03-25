@@ -21,23 +21,24 @@ class HoverflyConfigValidator {
             throw new IllegalArgumentException("HoverflyConfig cannot be null.");
         }
 
-        // Validate local config
-        else {
-            // Validate custom ca cert and key
-            boolean isKeyBlank = StringUtils.isBlank(hoverflyConfig.getSslKeyPath());
-            boolean isCertBlank = StringUtils.isBlank(hoverflyConfig.getSslCertificatePath());
-            if (isKeyBlank && !isCertBlank || !isKeyBlank && isCertBlank) {
-                throw new IllegalArgumentException("Both SSL key and certificate files are required to override the default Hoverfly SSL.");
-            }
-            // Validate proxy port
-            if (hoverflyConfig.getProxyPort() == 0) {
-                hoverflyConfig.setProxyPort(findUnusedPort());
-            }
+        if (hoverflyConfig.isWebServer()) {
+            throw new UnsupportedOperationException("Webserver mode is not implemented for Hoverfly gRPC yet.");
+        }
 
-            // Validate admin port
-            if (hoverflyConfig.getAdminPort() == 0) {
-                hoverflyConfig.setAdminPort(findUnusedPort());
-            }
+        // Validate custom ca cert and key
+        boolean isKeyBlank = StringUtils.isBlank(hoverflyConfig.getSslKeyPath());
+        boolean isCertBlank = StringUtils.isBlank(hoverflyConfig.getSslCertificatePath());
+        if (isKeyBlank && !isCertBlank || !isKeyBlank && isCertBlank) {
+            throw new IllegalArgumentException("Both SSL key and certificate files are required to override the default Hoverfly SSL.");
+        }
+        // Validate proxy port
+        if (hoverflyConfig.getProxyPort() == 0) {
+            hoverflyConfig.setProxyPort(findUnusedPort());
+        }
+
+        // Validate admin port
+        if (hoverflyConfig.getAdminPort() == 0) {
+            hoverflyConfig.setAdminPort(findUnusedPort());
         }
 
         // Check proxy CA cert exists
