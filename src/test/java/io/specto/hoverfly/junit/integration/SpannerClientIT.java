@@ -3,6 +3,7 @@ package io.specto.hoverfly.junit.integration;
 import com.google.cloud.spanner.admin.database.v1.DatabaseAdminClient;
 import com.google.cloud.spanner.admin.instance.v1.InstanceAdminClient;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
+import io.specto.hoverfly.junit.grpc.GrpcConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -17,8 +18,7 @@ public class SpannerClientIT {
 
     @ClassRule
     public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("spanner-api.json",
-          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888)
-                  .simulationPreprocessor(new GcpApiSimulationPreprocessor()));
+          new GrpcConfig().simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 
     private SpannerClient spannerClient;
 

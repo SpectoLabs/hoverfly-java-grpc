@@ -17,6 +17,7 @@
 package io.specto.hoverfly.junit.integration;
 
 import io.specto.hoverfly.junit.core.HoverflyConfig;
+import io.specto.hoverfly.junit.grpc.GrpcConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.After;
 import org.junit.Before;
@@ -58,8 +59,7 @@ public class StackDriverClientIT {
 
   @ClassRule
   public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("stackdriver-api.json",
-          HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888)
-                  .simulationPreprocessor(new GcpApiSimulationPreprocessor()));
+          new GrpcConfig().simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 
   @Test
   public void testListMetricsDescriptor() throws Exception {

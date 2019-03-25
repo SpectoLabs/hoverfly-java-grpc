@@ -4,6 +4,7 @@ import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.TopicAdminClient;
 import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.core.SimulationSource;
+import io.specto.hoverfly.junit.grpc.GrpcConfig;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -15,8 +16,7 @@ public class PubSubClientIT {
 
     @ClassRule
     public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("pubsub-api.json",
-            HoverflyConfig.remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888)
-                    .simulationPreprocessor(new GcpApiSimulationPreprocessor()));
+            new GrpcConfig().simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 
     private PubSubClient pubSubClient;
 
