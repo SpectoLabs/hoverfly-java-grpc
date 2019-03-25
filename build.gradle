@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 plugins {
     id 'java'
 }
@@ -26,4 +28,37 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.10.2'
+}
+
+task (updateHoverflyBinaries) {
+    doLast {
+        println "Unzipping Hoverfly binaries"
+
+        def downloadDir = "$buildDir/tmp/dist"
+        def distDir = file("$downloadDir")
+        def extractBinary = { FileTree zip ->
+            copy {
+                from zip
+                into 'src/main/resources/binaries'
+                rename { String filename ->
+                    def p1 = Pattern.compile('hoverfly(.*)')
+                    def m1 = p1.matcher(filename)
+                    def extension = m1.find() ? m1.group(1) : ''
+                    def p2 = Pattern.compile('hoverfly2_bundle(.+?)\\.zip')
+                    def m2 = p2.matcher(zip.asPath)
+                    def type = m2.find() ? m2.group(1) : ''
+                    filename = 'hoverfly2' + type + extension
+                }
+            }
+        }
+
+        distDir.listFiles()
+                .findAll { it.name.endsWith('.zip') }
+                .collect { zipTree(it).matching { include 'hoverfly*' } }
+                .each { zip -> extractBinary(zip) }
+    }
+}
+
+task (cleanHoverflyBinaries, type: Delete) {
+    delete fileTree(dir: 'src/main/resources/binaries')
 }
