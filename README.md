@@ -1,7 +1,7 @@
 Following these steps to start using Hoverfly-Java-Grpc: 
 
 Pre-requisites:
-1. Install Hoverfly Self-signed certificate. 
+1. Install Hoverfly self-signed certificate. 
    gRPC client must be able to trust Hoverfly certificate for Hoverfly to perform MITM proxying. This is usually taken care of 
    by Hoverfly-Java, and most of the HTTP clients respects the default JAVA SslContext. However this is not the case for GCP Java Client.
    
