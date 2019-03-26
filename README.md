@@ -7,16 +7,17 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
 
 ## Pre-requisites:
 1. Install Hoverfly self-signed certificate. 
-   gRPC client must be able to trust Hoverfly certificate for Hoverfly to perform MITM proxying. This is usually taken care of 
-   by Hoverfly-Java, and most of the HTTP clients respects the default JAVA SSLContext. However this is not the case for GCP Java Client.
+   A client must be configured to trust Hoverfly certificate for Hoverfly to perform MITM proxying. This is usually taken care of 
+   by Hoverfly Java via configuring the default SSLContext. However GCP Java Client neither use default SSLContext or allow setting a
+   custom SSLContext. So here is what you need to do instead:
    
-   First download the certificate from Hoverfly Git repo: 
+   - First download the certificate from Hoverfly Git repo: 
    
-   `wget https://raw.githubusercontent.com/SpectoLabs/hoverfly/master/core/cert.pem`
+     `wget https://raw.githubusercontent.com/SpectoLabs/hoverfly/master/core/cert.pem`
    
-   Then manually add the Hoverfly self-signed certificate to the global Java keystore with the following command: 
+   - Then manually add the Hoverfly self-signed cert to the global Java keystore with the following command: 
    
-   `sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem`
+     `sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem`
    
 2. Add the jar file as your project dependency. (The release version will be available from Maven Central)
 
@@ -67,7 +68,7 @@ Whenever you need to capture or simulate the GCP APIs, just create a `HoverflyRu
     public static HoverflyRule hoverflyRule = HoverflyRule.inCaptureOrSimulationMode("simulation.json", new GrpcConfig().simulationPreprocessor(new GcpApiSimulationPreprocessor()));
 ```
 
-Note: I set a `GcpApiSimulationPreprocessor` to remove GCP authentication request body from matching. The GCP OAuth request body contains time-sensitive data, and does not exactly match on previous captured data. This class is provided in the package.
+Note: The GCP OAuth request body contains time-sensitive data, and does not exactly match on previous captured data. The code above set a `GcpApiSimulationPreprocessor` to remove GCP authentication request body from matching.
 
 
 (c) SpectoLabs 2019.
