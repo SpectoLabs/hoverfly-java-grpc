@@ -1,4 +1,4 @@
-package io.specto.hoverfly.junit.integration;
+package io.specto.hoverfly.junit.grpc.preprocessor;
 
 import io.specto.hoverfly.junit.core.SimulationPreprocessor;
 import io.specto.hoverfly.junit.core.model.RequestResponsePair;

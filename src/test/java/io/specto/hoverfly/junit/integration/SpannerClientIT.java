@@ -2,8 +2,8 @@ package io.specto.hoverfly.junit.integration;
 
 import com.google.cloud.spanner.admin.database.v1.DatabaseAdminClient;
 import com.google.cloud.spanner.admin.instance.v1.InstanceAdminClient;
-import io.specto.hoverfly.junit.core.HoverflyConfig;
 import io.specto.hoverfly.junit.grpc.GrpcConfig;
+import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;

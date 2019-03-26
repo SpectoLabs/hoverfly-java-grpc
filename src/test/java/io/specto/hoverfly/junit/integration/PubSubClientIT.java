@@ -2,9 +2,8 @@ package io.specto.hoverfly.junit.integration;
 
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.TopicAdminClient;
-import io.specto.hoverfly.junit.core.HoverflyConfig;
-import io.specto.hoverfly.junit.core.SimulationSource;
 import io.specto.hoverfly.junit.grpc.GrpcConfig;
+import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;
