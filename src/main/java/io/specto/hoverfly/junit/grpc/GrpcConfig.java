@@ -5,6 +5,9 @@ import io.specto.hoverfly.junit.core.config.HoverflyConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Config builder for enabling gRPC support in {@link io.specto.hoverfly.junit.core.Hoverfly}
+ */
 public class GrpcConfig extends HoverflyConfig {
 
     private static final String DEFAULT_BINARY_NAME_FORMAT = "hoverfly2_%s_%s%s";
