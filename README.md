@@ -13,16 +13,12 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
    
    - First download the certificate from Hoverfly Git repo: 
    
-     ```bash
-     $ wget https://raw.githubusercontent.com/SpectoLabs/hoverfly/master/core/cert.pem
-     ```
+     `wget https://raw.githubusercontent.com/SpectoLabs/hoverfly/master/core/cert.pem`
      
    
    - Then manually add the Hoverfly self-signed cert to the global Java keystore with the following command:
    
-     ```bash
-     $ sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem
-     ``` 
+     `sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem` 
    
 2. Add the jar file as your project dependency. (The release version will be available from Maven Central)
 
