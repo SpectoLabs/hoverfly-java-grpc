@@ -39,5 +39,9 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       - run: echo ${TEST_SERVICE_ACCOUNT} > test-service-account.json
+      - run:
+          name: Install Hoverfly cert
+          command: sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem
+
       # run tests!
       - run: ./gradlew test
