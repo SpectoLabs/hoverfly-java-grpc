@@ -65,3 +65,11 @@ task (updateHoverflyBinaries) {
 task (cleanHoverflyBinaries, type: Delete) {
     delete fileTree(dir: 'src/main/resources/binaries')
 }
+
+
+test {
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        exceptionFormat "full"
+    }
+}
