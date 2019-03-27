@@ -7,6 +7,7 @@ import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +34,7 @@ public class PubSubClientIT {
         assertThat(response.getPage().getPageElementCount()).isEqualTo(0);
     }
 
+    @Ignore
     @Test
     public void testListTopics() throws Exception {
         // Act

@@ -19,10 +19,7 @@ package io.specto.hoverfly.junit.integration;
 import io.specto.hoverfly.junit.grpc.GrpcConfig;
 import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -30,6 +27,7 @@ import java.io.PrintStream;
 import static io.specto.hoverfly.junit.core.HoverflyConfig.remoteConfigs;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 
 public class StackDriverClientIT {
   private ByteArrayOutputStream bout;

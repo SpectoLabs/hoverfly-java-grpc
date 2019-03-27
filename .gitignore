@@ -21,4 +21,4 @@ hs_err_pid*
 build/
 out/
 target/
-hoverfly-cloud-dev-6c006e42c98a.json
+test-service-account.json

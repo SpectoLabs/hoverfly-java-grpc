@@ -1,0 +1,52 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : [ {
+          "matcher" : "exact",
+          "value" : "/google.pubsub.v1.Subscriber/ListSubscriptions"
+        } ],
+        "method" : [ {
+          "matcher" : "exact",
+          "value" : "POST"
+        } ],
+        "destination" : [ {
+          "matcher" : "exact",
+          "value" : "pubsub.googleapis.com:443"
+        } ],
+        "scheme" : [ {
+          "matcher" : "exact",
+          "value" : "https"
+        } ],
+        "query" : { },
+        "body" : [ {
+          "matcher" : "exact",
+          "value" : "\u0000\u0000\u0000\u0000$\n\"projects/hoverfly-cloud-dev-162815"
+        } ]
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "AAAAAAA=",
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Alt-Svc" : [ "quic=\":443\"; ma=2592000; v=\"46,44,43,39\"" ],
+          "Content-Disposition" : [ "attachment" ],
+          "Content-Type" : [ "application/grpc" ],
+          "Date" : [ "Wed, 27 Mar 2019 22:04:36 GMT" ],
+          "Grpc-Status" : [ "0" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Trailer" : [ "Grpc-Status", "Content-Disposition" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v5",
+    "hoverflyVersion" : "v1.0.0-rc.2",
+    "timeExported" : "2019-03-27T22:04:36Z"
+  }
+}

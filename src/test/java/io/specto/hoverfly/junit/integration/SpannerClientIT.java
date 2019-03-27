@@ -7,12 +7,14 @@ import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
 import io.specto.hoverfly.junit.rule.HoverflyRule;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class SpannerClientIT {
 
 
