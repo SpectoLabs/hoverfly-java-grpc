@@ -15,7 +15,7 @@ public class PubSubClient {
     SubscriptionAdminClient.ListSubscriptionsPagedResponse listSubscriptions() throws IOException {
         SubscriptionAdminClient subscriptionAdminClient = SubscriptionAdminClient.create(
                 SubscriptionAdminSettings.newBuilder().setCredentialsProvider(() ->
-                        GoogleCredentials.fromStream(new FileInputStream(Paths.get("src/test/resources/test-service-account.json").toFile()))).build());
+                        GoogleCredentials.fromStream(new FileInputStream(Paths.get("test-service-account.json").toFile()))).build());
 
         String projectId = System.getProperty("projectId");
         return subscriptionAdminClient.listSubscriptions(ProjectName.of(projectId));
