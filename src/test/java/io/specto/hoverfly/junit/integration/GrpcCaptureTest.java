@@ -65,7 +65,15 @@ public class GrpcCaptureTest {
 
         assertThat(pairs).hasSize(2);
 
-        assertThat(pairs.iterator().next().getRequest().getHeaders()).isNotEmpty();
+        pairs.forEach(pair -> {
+            assertThat(pair.getRequest().getHeaders()).isNotEmpty();
+            assertThat(pair.getRequest().getMethod().get(0).getValue()).isEqualTo("POST");
+            assertThat(pair.getRequest().getDestination().get(0).getValue()).isEqualTo("pubsub.googleapis.com:443");
+            assertThat(pair.getRequest().getHeaders().get("Content-Type").get(0).getValue()).isEqualTo("application/grpc");
+            assertThat(pair.getResponse().getStatus()).isEqualTo(200);
+            assertThat(pair.getResponse().getHeaders().get("Grpc-Status")).containsOnly("0");
+            assertThat(pair.getResponse().getHeaders().get("Trailer")).contains("Grpc-Status");
+        });
 
     }
 }
