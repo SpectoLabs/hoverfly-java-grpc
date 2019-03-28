@@ -22,4 +22,4 @@ build/
 out/
 target/
 test-service-account.json
-/src/test/resources/hoverfly/pubsub-api.json
+/src/test/resources/hoverfly/captured.json
