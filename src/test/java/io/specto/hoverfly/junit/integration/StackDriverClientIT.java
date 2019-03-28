@@ -27,22 +27,9 @@ import java.io.PrintStream;
 import static io.specto.hoverfly.junit.core.HoverflyConfig.remoteConfigs;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore
-
 public class StackDriverClientIT {
   private ByteArrayOutputStream bout;
   private PrintStream out;
-  private static final String LEGACY_PROJECT_ENV_NAME = "GCLOUD_PROJECT";
-  private static final String PROJECT_ENV_NAME = "GOOGLE_CLOUD_PROJECT";
-
-  static String getProjectId() {
-    String projectId = System.getProperty(PROJECT_ENV_NAME, System.getenv(PROJECT_ENV_NAME));
-    if (projectId == null) {
-      projectId = System.getProperty(LEGACY_PROJECT_ENV_NAME,
-          System.getenv(LEGACY_PROJECT_ENV_NAME));
-    }
-    return "hoverfly-cloud-dev-162815";
-  }
 
   @Before
   public void setUp() {
@@ -64,8 +51,7 @@ public class StackDriverClientIT {
   @Test
   public void testListMetricsDescriptor() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listMetricDescriptors();
     // Assert
@@ -73,11 +59,11 @@ public class StackDriverClientIT {
     assertThat(got).contains("metricDescriptors/bigquery.googleapis.com/query/count");
   }
 
+  @Ignore
   @Test
   public void testListTimeSeries() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
 
@@ -86,11 +72,11 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries:");
   }
 
+  @Ignore
   @Test
   public void testListTimeSeriesHeader() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listTimeSeriesHeaders();
 
@@ -99,11 +85,11 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries headers:");
   }
 
+  @Ignore
   @Test
   public void testListTimeSeriesAggregate() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listTimeSeriesAggregrate();
 
@@ -112,11 +98,11 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries:");
   }
 
+  @Ignore
   @Test
   public void testListTimeSeriesReduce() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listTimeSeriesReduce();
 
@@ -128,8 +114,7 @@ public class StackDriverClientIT {
   @Test
   public void testGetResource() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.describeMonitoredResources("cloudsql_database");
 
@@ -141,8 +126,7 @@ public class StackDriverClientIT {
   @Test
   public void testListResources() throws Exception {
     // Act
-    System.setProperty("projectId", StackDriverClientIT.getProjectId());
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
     stackDriverClient.listMonitoredResources();
 

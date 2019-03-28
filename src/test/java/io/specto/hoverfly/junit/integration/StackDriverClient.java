@@ -24,22 +24,40 @@ import com.google.cloud.monitoring.v3.MetricServiceClient;
 import com.google.cloud.monitoring.v3.MetricServiceClient.ListMetricDescriptorsPagedResponse;
 import com.google.cloud.monitoring.v3.MetricServiceClient.ListMonitoredResourceDescriptorsPagedResponse;
 import com.google.cloud.monitoring.v3.MetricServiceClient.ListTimeSeriesPagedResponse;
+import com.google.cloud.monitoring.v3.MetricServiceSettings;
 import com.google.monitoring.v3.*;
 import com.google.protobuf.Duration;
 import com.google.protobuf.util.Timestamps;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// Imports the Google Cloud client library
+import static io.specto.hoverfly.junit.integration.GcpClientHelper.PROJECT_ID;
+import static io.specto.hoverfly.junit.integration.GcpClientHelper.defaultCredentialsProvider;
 
 
 public class StackDriverClient {
 
   private static final String CUSTOM_METRIC_DOMAIN = "custom.googleapis.com";
+  private static final long CURRENT_TIME_MILLIS = ZonedDateTime.of(2019, 3, 28, 0, 0, 0, 0, ZoneId.of("UTC")).toInstant().toEpochMilli();
+  private static final ProjectName PROJECT_NAME = ProjectName.of(PROJECT_ID);
+
+  private MetricServiceClient client;
+
+  private StackDriverClient(MetricServiceClient client) {
+    this.client = client;
+  }
+
+  public static StackDriverClient newInstance() throws IOException {
+    MetricServiceSettings settings = MetricServiceSettings.newBuilder().setCredentialsProvider(defaultCredentialsProvider()).build();
+    final MetricServiceClient client = MetricServiceClient.create(settings);
+    return new StackDriverClient(client);
+  }
 
   /**
    * Exercises the methods defined in this class.
@@ -49,7 +67,7 @@ public class StackDriverClient {
    */
   public static void main(String[] args) throws Exception {
 
-    StackDriverClient stackDriverClient = new StackDriverClient();
+    StackDriverClient stackDriverClient = newInstance();
     System.out.println("Stackdriver Monitoring snippets");
     System.out.println();
     printUsage();
@@ -76,14 +94,9 @@ public class StackDriverClient {
    *
    * @param type The metric type
    */
-  void createMetricDescriptor(String type) throws IOException {
+  void createMetricDescriptor(String type) {
     // [START monitoring_create_metric]
-    // Your Google Cloud Platform project ID
-    String projectId = System.getProperty("projectId");
     String metricType = CUSTOM_METRIC_DOMAIN + "/" + type;
-
-    final MetricServiceClient client = MetricServiceClient.create();
-    ProjectName name = ProjectName.of(projectId);
 
     MetricDescriptor descriptor = MetricDescriptor.newBuilder()
         .setType(metricType)
@@ -93,7 +106,7 @@ public class StackDriverClient {
         .build();
 
     CreateMetricDescriptorRequest request = CreateMetricDescriptorRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .setMetricDescriptor(descriptor)
         .build();
 
@@ -106,11 +119,9 @@ public class StackDriverClient {
    *
    * @param name Name of metric descriptor to delete
    */
-  void deleteMetricDescriptor(String name) throws IOException {
+  void deleteMetricDescriptor(String name) {
     // [START monitoring_delete_metric]
-    String projectId = System.getProperty("projectId");
-    final MetricServiceClient client = MetricServiceClient.create();
-    MetricDescriptorName metricName = MetricDescriptorName.of(projectId, name);
+    MetricDescriptorName metricName = MetricDescriptorName.of(PROJECT_ID, name);
     client.deleteMetricDescriptor(metricName);
     System.out.println("Deleted descriptor " + name);
     // [END monitoring_delete_metric]
@@ -125,15 +136,13 @@ public class StackDriverClient {
    * doesn't exist, it will be auto-created.
    */
   //CHECKSTYLE OFF: VariableDeclarationUsageDistance
-  void writeTimeSeries() throws IOException {
+  void writeTimeSeries() {
     // [START monitoring_write_timeseries]
-    String projectId = System.getProperty("projectId");
-    // Instantiates a client
-    MetricServiceClient metricServiceClient = MetricServiceClient.create();
 
     // Prepares an individual data point
+    
     TimeInterval interval = TimeInterval.newBuilder()
-        .setEndTime(Timestamps.fromMillis(System.currentTimeMillis()))
+        .setEndTime(Timestamps.fromMillis(CURRENT_TIME_MILLIS))
         .build();
     TypedValue value = TypedValue.newBuilder()
         .setDoubleValue(123.45)
@@ -145,8 +154,6 @@ public class StackDriverClient {
 
     List<Point> pointList = new ArrayList<>();
     pointList.add(point);
-
-    ProjectName name = ProjectName.of(projectId);
 
     // Prepares the metric descriptor
     Map<String, String> metricLabels = new HashMap<>();
@@ -176,12 +183,12 @@ public class StackDriverClient {
     timeSeriesList.add(timeSeries);
 
     CreateTimeSeriesRequest request = CreateTimeSeriesRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .addAllTimeSeries(timeSeriesList)
         .build();
 
     // Writes time series data
-    metricServiceClient.createTimeSeries(request);
+    client.createTimeSeries(request);
     System.out.println("Done writing time series value.");
     // [END monitoring_write_timeseries]
   }
@@ -190,28 +197,25 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series headers.
    */
-  void listTimeSeriesHeaders() throws IOException {
+  void listTimeSeriesHeaders() {
     // [START monitoring_read_timeseries_fields]
-    MetricServiceClient metricServiceClient = MetricServiceClient.create();
-    String projectId = System.getProperty("projectId");
-    ProjectName name = ProjectName.of(projectId);
 
     // Restrict time to last 20 minutes
-    long startMillis = System.currentTimeMillis() - ((60 * 20) * 1000);
+    long startMillis = CURRENT_TIME_MILLIS - ((60 * 20) * 1000);
     TimeInterval interval = TimeInterval.newBuilder()
         .setStartTime(Timestamps.fromMillis(startMillis))
-        .setEndTime(Timestamps.fromMillis(System.currentTimeMillis()))
+        .setEndTime(Timestamps.fromMillis(CURRENT_TIME_MILLIS))
         .build();
 
     ListTimeSeriesRequest.Builder requestBuilder = ListTimeSeriesRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .setFilter("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"")
         .setInterval(interval)
         .setView(ListTimeSeriesRequest.TimeSeriesView.HEADERS);
 
     ListTimeSeriesRequest request = requestBuilder.build();
 
-    ListTimeSeriesPagedResponse response = metricServiceClient.listTimeSeries(request);
+    ListTimeSeriesPagedResponse response = client.listTimeSeries(request);
 
     System.out.println("Got timeseries headers: ");
     for (TimeSeries ts : response.iterateAll()) {
@@ -223,27 +227,24 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series using a filter.
    */
-  void listTimeSeries(String filter) throws IOException {
+  void listTimeSeries(String filter) {
     // [START monitoring_read_timeseries_simple]
-    MetricServiceClient metricServiceClient = MetricServiceClient.create();
-    String projectId = System.getProperty("projectId");
-    ProjectName name = ProjectName.of(projectId);
 
     // Restrict time to last 20 minutes
-    long startMillis = System.currentTimeMillis() - ((60 * 20) * 1000);
+    long startMillis = CURRENT_TIME_MILLIS - ((60 * 20) * 1000);
     TimeInterval interval = TimeInterval.newBuilder()
         .setStartTime(Timestamps.fromMillis(startMillis))
-        .setEndTime(Timestamps.fromMillis(System.currentTimeMillis()))
+        .setEndTime(Timestamps.fromMillis(CURRENT_TIME_MILLIS))
         .build();
 
     ListTimeSeriesRequest.Builder requestBuilder = ListTimeSeriesRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .setFilter(filter)
         .setInterval(interval);
 
     ListTimeSeriesRequest request = requestBuilder.build();
 
-    ListTimeSeriesPagedResponse response = metricServiceClient.listTimeSeries(request);
+    ListTimeSeriesPagedResponse response = client.listTimeSeries(request);
 
     System.out.println("Got timeseries: ");
     for (TimeSeries ts : response.iterateAll()) {
@@ -255,17 +256,14 @@ public class StackDriverClient {
   /**
    * Demonstrates listing time series and aggregating them.
    */
-  void listTimeSeriesAggregrate() throws IOException {
+  void listTimeSeriesAggregrate() {
     // [START monitoring_read_timeseries_align]
-    MetricServiceClient metricServiceClient = MetricServiceClient.create();
-    String projectId = System.getProperty("projectId");
-    ProjectName name = ProjectName.of(projectId);
 
     // Restrict time to last 20 minutes
-    long startMillis = System.currentTimeMillis() - ((60 * 20) * 1000);
+    long startMillis = CURRENT_TIME_MILLIS - ((60 * 20) * 1000);
     TimeInterval interval = TimeInterval.newBuilder()
         .setStartTime(Timestamps.fromMillis(startMillis))
-        .setEndTime(Timestamps.fromMillis(System.currentTimeMillis()))
+        .setEndTime(Timestamps.fromMillis(CURRENT_TIME_MILLIS))
         .build();
 
     Aggregation aggregation = Aggregation.newBuilder()
@@ -274,14 +272,14 @@ public class StackDriverClient {
         .build();
 
     ListTimeSeriesRequest.Builder requestBuilder = ListTimeSeriesRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .setFilter("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"")
         .setInterval(interval)
         .setAggregation(aggregation);
 
     ListTimeSeriesRequest request = requestBuilder.build();
 
-    ListTimeSeriesPagedResponse response = metricServiceClient.listTimeSeries(request);
+    ListTimeSeriesPagedResponse response = client.listTimeSeries(request);
 
     System.out.println("Got timeseries: ");
     for (TimeSeries ts : response.iterateAll()) {
@@ -295,15 +293,12 @@ public class StackDriverClient {
    */
   void listTimeSeriesReduce() throws IOException {
     // [START monitoring_read_timeseries_reduce]
-    MetricServiceClient metricServiceClient = MetricServiceClient.create();
-    String projectId = System.getProperty("projectId");
-    ProjectName name = ProjectName.of(projectId);
 
     // Restrict time to last 20 minutes
-    long startMillis = System.currentTimeMillis() - ((60 * 20) * 1000);
+    long startMillis = CURRENT_TIME_MILLIS - ((60 * 20) * 1000);
     TimeInterval interval = TimeInterval.newBuilder()
         .setStartTime(Timestamps.fromMillis(startMillis))
-        .setEndTime(Timestamps.fromMillis(System.currentTimeMillis()))
+        .setEndTime(Timestamps.fromMillis(CURRENT_TIME_MILLIS))
         .build();
 
     Aggregation aggregation = Aggregation.newBuilder()
@@ -313,14 +308,14 @@ public class StackDriverClient {
         .build();
 
     ListTimeSeriesRequest.Builder requestBuilder = ListTimeSeriesRequest.newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .setFilter("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"")
         .setInterval(interval)
         .setAggregation(aggregation);
 
     ListTimeSeriesRequest request = requestBuilder.build();
 
-    ListTimeSeriesPagedResponse response = metricServiceClient.listTimeSeries(request);
+    ListTimeSeriesPagedResponse response = client.listTimeSeries(request);
 
     System.out.println("Got timeseries: ");
     for (TimeSeries ts : response.iterateAll()) {
@@ -332,17 +327,12 @@ public class StackDriverClient {
   /**
    * Returns the first page of all metric descriptors.
    */
-  void listMetricDescriptors() throws IOException {
+  void listMetricDescriptors() {
     // [START monitoring_list_descriptors]
-    // Your Google Cloud Platform project ID
-    String projectId = System.getProperty("projectId");
-
-    final MetricServiceClient client = MetricServiceClient.create();
-    ProjectName name = ProjectName.of(projectId);
 
     ListMetricDescriptorsRequest request = ListMetricDescriptorsRequest
         .newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .build();
     ListMetricDescriptorsPagedResponse response = client.listMetricDescriptors(request);
 
@@ -357,17 +347,12 @@ public class StackDriverClient {
   /**
    * Gets all monitored resource descriptors.
    */
-  void listMonitoredResources() throws IOException {
+  void listMonitoredResources() {
     // [START monitoring_list_resources]
-    // Your Google Cloud Platform project ID
-    String projectId = System.getProperty("projectId");
-
-    final MetricServiceClient client = MetricServiceClient.create();
-    ProjectName name = ProjectName.of(projectId);
 
     ListMonitoredResourceDescriptorsRequest request = ListMonitoredResourceDescriptorsRequest
         .newBuilder()
-        .setName(name.toString())
+        .setName(PROJECT_NAME.toString())
         .build();
 
     System.out.println("Listing monitored resource descriptors: ");
@@ -386,13 +371,10 @@ public class StackDriverClient {
    *
    * @param type The resource type
    */
-  void describeMonitoredResources(String type) throws IOException {
+  void describeMonitoredResources(String type) {
     // [START monitoring_get_descriptor]
-    // Your Google Cloud Platform project ID
-    String projectId = System.getProperty("projectId");
 
-    final MetricServiceClient client = MetricServiceClient.create();
-    MonitoredResourceDescriptorName name = MonitoredResourceDescriptorName.of(projectId, type);
+    MonitoredResourceDescriptorName name = MonitoredResourceDescriptorName.of(PROJECT_ID, type);
     MonitoredResourceDescriptor response = client.getMonitoredResourceDescriptor(name);
 
     System.out.println("Printing monitored resource descriptor: ");
