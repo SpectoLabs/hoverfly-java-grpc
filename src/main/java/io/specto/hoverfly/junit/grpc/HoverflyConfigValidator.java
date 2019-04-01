@@ -16,7 +16,6 @@ import java.util.Optional;
  */
 class HoverflyConfigValidator {
 
-    private static final String DEFAULT_LICENCE_FILE_NAME = "hoverfly_license";
     /**
      * Sanity checking hoverfly configs and assign port number if necessary
      */
@@ -57,9 +56,9 @@ class HoverflyConfigValidator {
     /**
      * Looks for a resource on the classpath with the given name
      */
-    static String findLicenseFileOnClasspath() {
+    static String findLicenseFileOnClasspath(String filepath) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return Optional.ofNullable(classLoader.getResource(DEFAULT_LICENCE_FILE_NAME))
+        return Optional.ofNullable(classLoader.getResource(filepath))
                 .map(url -> {
                     try {
                         return url.toURI();
