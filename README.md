@@ -21,26 +21,52 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
    
      `sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem` 
    
-2. Add the jar file as your project dependency. (The release version will be available from Maven Central)
-
-3. You also need to include `hoverfly-java` version `0.11.5` or over in your Maven or Gradle build file.
+2. Import both `hoverfly-java-grpc` and `hoverfly-java` (version `0.11.5` or above) into your Maven or Gradle build file.
    
    For Gradle: 
    ```groovy
+   repositories {
+       maven {
+           url 'https://oss.sonatype.org/content/repositories/snapshots'
+       }
+   }
+
     dependencies {
+        testCompile 'io.specto:hoverfly-java-grpc:0.11.5-SNAPSHOT'
         testCompile 'io.specto:hoverfly-java:0.11.5'
     }
     ```
     
     For Maven: 
     ```xml
-    <dependency>
-         <groupId>io.specto</groupId>
-         <artifactId>hoverfly-java</artifactId>
-         <version>0.11.5</version>
-         <scope>test</scope>
-    </dependency>
+    <repositories>
+        <repository>
+            <id>oss-snapshots</id>
+                <name>OSS Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                </snapshots>
+        </repository>
+    </repositories>
+ 
+    <dependencies>
+        <dependency>
+              <groupId>io.specto</groupId>
+              <artifactId>hoverfly-java-grpc</artifactId>
+              <version>0.11.5-SNAPSHOT</version>
+              <scope>test</scope>
+        </dependency>
+        <dependency>
+             <groupId>io.specto</groupId>
+             <artifactId>hoverfly-java</artifactId>
+             <version>0.11.5</version>
+             <scope>test</scope>
+       </dependency>
+    </dependencies>
+ 
     ```
+
    
 ## Usage
 
@@ -73,6 +99,8 @@ The default JAVA keystore pass is `changeit`
 Use hoverfly-java-grpc requires a valid license. You need to make sure your license file is named `hoverfly_license` and can be found on classpath. 
 
 Putting the license file under `test/resources` folder is usually sufficient. 
+
+Please email contact@specto.io if you require a new license.
 
 
 (c) SpectoLabs 2019.
