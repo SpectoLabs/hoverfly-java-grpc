@@ -15,7 +15,16 @@ public class GrpcConfigTest {
         HoverflyConfiguration config = new GrpcConfig().build();
 
         assertThat(config.getBinaryNameFormat()).isEqualTo("hoverfly2_%s_%s%s");
+    }
 
+    @Test
+    public void shouldSetLicenseFilePath() {
+
+        HoverflyConfiguration config = new GrpcConfig().build();
+
+        assertThat(config.getCommands()).hasSize(2);
+        assertThat(config.getCommands().get(0)).isEqualTo("-license-path");
+        assertThat(config.getCommands().get(1)).contains("test/resources/hoverfly_license");
     }
 
     @Test
