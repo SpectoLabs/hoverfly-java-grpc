@@ -84,10 +84,10 @@ uploadArchives {
             }
 
             pom.project {
-                name "${subproj.property('title')}"
+                name 'Hoverfly Java gRPC'
                 packaging 'jar'
                 // optionally artifactId can be defined here
-                description "${subproj.property('description')}"
+                description 'Hoverfy Java extension for supporting gRPC simulate and capture'
                 url 'https://github.com/SpectoLabs/hoverfly-java-grpc'
 
                 scm {
