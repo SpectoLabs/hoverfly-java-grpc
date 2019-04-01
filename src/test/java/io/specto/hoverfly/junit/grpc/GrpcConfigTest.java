@@ -24,7 +24,7 @@ public class GrpcConfigTest {
 
         assertThat(config.getCommands()).hasSize(2);
         assertThat(config.getCommands().get(0)).isEqualTo("-license-path");
-        assertThat(config.getCommands().get(1)).contains("test/resources/hoverfly_license");
+        assertThat(config.getCommands().get(1)).contains("hoverfly_license");
     }
 
     @Test
