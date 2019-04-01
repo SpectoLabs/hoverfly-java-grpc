@@ -1,6 +1,7 @@
 import java.util.regex.Pattern
 
 plugins {
+    id "de.undercouch.download" version "3.4.2"
     id 'java'
 }
 
@@ -35,9 +36,23 @@ task wrapper(type: Wrapper) {
 
 task (updateHoverflyBinaries) {
     doLast {
+        def downloadUrl = 'https://storage.googleapis.com/hoverfly2-master-builds/latest'
+        def downloadDir = "$buildDir/tmp/dist"
+        println "Downloading latest Hoverfly2 if needed"
+        download {
+            src([
+                    "$downloadUrl/hoverfly2_bundle_linux_386.zip",
+                    "$downloadUrl/hoverfly2_bundle_linux_amd64.zip",
+                    "$downloadUrl/hoverfly2_bundle_OSX_amd64.zip",
+                    "$downloadUrl/hoverfly2_bundle_windows_386.zip",
+                    "$downloadUrl/hoverfly2_bundle_windows_amd64.zip"
+            ])
+            dest "$downloadDir"
+            onlyIfNewer true
+            quiet true
+        }
         println "Unzipping Hoverfly binaries"
 
-        def downloadDir = "$buildDir/tmp/dist"
         def distDir = file("$downloadDir")
         def extractBinary = { FileTree zip ->
             copy {
@@ -64,6 +79,10 @@ task (updateHoverflyBinaries) {
 
 task (cleanHoverflyBinaries, type: Delete) {
     delete fileTree(dir: 'src/main/resources/binaries')
+}
+
+processResources {
+    dependsOn updateHoverflyBinaries
 }
 
 
