@@ -45,3 +45,42 @@ jobs:
 
       # run tests!
       - run: ./gradlew test
+      - persist_to_workspace:
+          root: /home/circleci/
+          paths:
+            - hoverfly-java-grpc/
+
+  deploy:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/hoverfly-java-grpc
+    steps:
+      - checkout
+      - run:
+          name: Config release dependencies
+          command: |
+            sudo apt-get install gnupg2 -y
+            git config core.filemode false
+            mkdir ~/.gnupg
+            echo 'use-agent' >> ~/.gnupg/gpg.conf
+            echo 'pinentry-mode loopback' >> ~/.gnupg/gpg.conf
+            echo 'allow-loopback-pinentry' >> ~/.gnupg/gpg-agent.conf
+            echo RELOADAGENT | gpg-connect-agent
+            chmod +x maven-release.sh
+            echo ${GPG_PRIVATE_KEY} | base64 --decode -i | gpg2 --import --passphrase ${MAVEN_GPG_PASSPHRASE}
+            gpg --export-secret-keys > ~/.gnupg/secring.gpg --passphrase ${MAVEN_GPG_PASSPHRASE}
+      - run:
+          name: Run Maven release
+          command: ./maven-release.sh
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
