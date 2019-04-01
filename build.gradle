@@ -2,10 +2,12 @@ import java.util.regex.Pattern
 
 plugins {
     id "de.undercouch.download" version "3.4.2"
+    id 'net.researchgate.release' version '2.4.0'
     id 'java'
 }
 
 group 'io.specto'
+archivesBaseName = 'hoverfly-java-grpc'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -28,6 +30,91 @@ dependencies {
     testCompile 'com.google.cloud:google-cloud-monitoring:1.46.0'
     testCompile 'com.google.cloud:google-cloud-pubsub:1.46.0'
     testCompile 'com.google.cloud:google-cloud-spanner:1.10.0'
+}
+
+ext."release.useAutomaticVersion" = true
+ext."signing.keyId" = "$System.env.MAVEN_GPG_KEYNAME"
+ext."signing.password" = "$System.env.MAVEN_GPG_PASSPHRASE"
+ext."signing.secretKeyRingFile" = "$System.env.HOME/.gnupg/secring.gpg"
+ext.ossrhUsername = "$System.env.MAVEN_CENTRAL_USERNAME"
+ext.ossrhPassword = "$System.env.MAVEN_CENTRAL_PASSWORD"
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'java'
+apply plugin: 'net.researchgate.release'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+def isSnapshot = project.version.contains('SNAPSHOT')
+
+afterEvaluate {
+    if (!isSnapshot) {
+        signing {
+            sign configurations.archives
+        }
+    }
+}
+
+afterReleaseBuild.dependsOn uploadArchives
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: "$ossrhUsername", password: "$ossrhPassword")
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: "$ossrhUsername", password: "$ossrhPassword")
+            }
+
+            pom.project {
+                name "${subproj.property('title')}"
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description "${subproj.property('description')}"
+                url 'https://github.com/SpectoLabs/hoverfly-java-grpc'
+
+                scm {
+                    connection 'scm:git:git@github.com:SpectoLabs/hoverfly-java-grpc.git'
+                    developerConnection 'scm:git:git@github.com:SpectoLabs/hoverfly-java-grpc.git'
+                    url 'git@github.com:SpectoLabs/hoverfly-java-grpc.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name 'Tommy Situ'
+                        email 'tommy.situ@specto.io'
+                        organization 'Specto Labs'
+                        organizationUrl 'http://www.specto.io'
+                    }
+                }
+            }
+        }
+    }
 }
 
 task wrapper(type: Wrapper) {
