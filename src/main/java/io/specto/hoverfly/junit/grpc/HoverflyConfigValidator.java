@@ -5,6 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 /**
@@ -12,6 +16,7 @@ import java.util.Optional;
  */
 class HoverflyConfigValidator {
 
+    private static final String DEFAULT_LICENCE_FILE_NAME = "hoverfly_license";
     /**
      * Sanity checking hoverfly configs and assign port number if necessary
      */
@@ -49,6 +54,23 @@ class HoverflyConfigValidator {
         return hoverflyConfig;
     }
 
+    /**
+     * Looks for a resource on the classpath with the given name
+     */
+    static String findLicenseFileOnClasspath() {
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return Optional.ofNullable(classLoader.getResource(DEFAULT_LICENCE_FILE_NAME))
+                .map(url -> {
+                    try {
+                        return url.toURI();
+                    } catch (URISyntaxException e) {
+                        throw new IllegalStateException("Failed to get license file path", e);
+                    }
+                })
+                .map(Paths::get)
+                .map(Path::toString)
+                .orElseThrow(() -> new IllegalStateException("'hoverfly_license' files is not found in classpath"));
+    }
 
     /**
      * Looks for an unused port on the current machine
