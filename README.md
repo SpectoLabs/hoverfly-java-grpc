@@ -23,12 +23,12 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
    
 2. Add the jar file as your project dependency. (The release version will be available from Maven Central)
 
-3. You also need to include `hoverfly-java` version `0.11.4` or over in your Maven or Gradle build file.
+3. You also need to include `hoverfly-java` version `0.11.5` or over in your Maven or Gradle build file.
    
    For Gradle: 
    ```groovy
     dependencies {
-        testCompile 'io.specto:hoverfly-java:0.11.4'
+        testCompile 'io.specto:hoverfly-java:0.11.5'
     }
     ```
     
@@ -37,7 +37,7 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
     <dependency>
          <groupId>io.specto</groupId>
          <artifactId>hoverfly-java</artifactId>
-         <version>0.11.4</version>
+         <version>0.11.5</version>
          <scope>test</scope>
     </dependency>
     ```
@@ -70,6 +70,9 @@ The default JAVA keystore pass is `changeit`
 
 
 ## Licensing
-TBD
+Use hoverfly-java-grpc requires a valid license. You need to make sure your license file is named `hoverfly_license` and can be found on classpath. 
+
+Putting the license file under `test/resources` folder is usually sufficient. 
+
 
 (c) SpectoLabs 2019.
