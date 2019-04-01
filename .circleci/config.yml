@@ -43,6 +43,7 @@ jobs:
           name: Install Hoverfly cert
           command: sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass ${KEY_STORE_PASS} -noprompt -file cert.pem
 
+      - run: echo ${LICENSE_FILE} > build/resources/test/hoverfly_license
       # run tests!
       - run: ./gradlew test
       - persist_to_workspace:

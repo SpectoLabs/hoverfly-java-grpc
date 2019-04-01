@@ -23,3 +23,4 @@ out/
 target/
 test-service-account.json
 /src/test/resources/hoverfly/captured.json
+/src/test/resources/hoverfly_license
