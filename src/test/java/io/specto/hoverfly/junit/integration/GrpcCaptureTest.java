@@ -3,15 +3,17 @@ package io.specto.hoverfly.junit.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.pubsub.v1.SubscriptionAdminClient;
 import com.google.cloud.pubsub.v1.TopicAdminClient;
+import com.google.cloud.spanner.admin.instance.v1.InstanceAdminClient;
 import io.specto.hoverfly.junit.core.Hoverfly;
 import io.specto.hoverfly.junit.core.HoverflyMode;
 import io.specto.hoverfly.junit.core.model.RequestResponsePair;
 import io.specto.hoverfly.junit.core.model.Simulation;
 import io.specto.hoverfly.junit.grpc.GrpcConfig;
-import io.specto.hoverfly.junit.grpc.preprocessor.GcpApiSimulationPreprocessor;
-import io.specto.hoverfly.junit.rule.HoverflyRule;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +33,7 @@ public class GrpcCaptureTest {
     }
 
     private PubSubClient pubSubClient = new PubSubClient();
+    private SpannerClient spannerClient = new SpannerClient();
 
     @Test
     public void testListSubscriptions() throws Exception {
@@ -43,9 +46,18 @@ public class GrpcCaptureTest {
     @Test
     public void testListTopics() throws Exception {
 
-        TopicAdminClient.ListTopicsPagedResponse response = pubSubClient.listTopics();
+        TopicAdminClient.ListTopicsPagedResponse response1 = pubSubClient.listTopics();
+        TopicAdminClient.ListTopicsPagedResponse response2 = pubSubClient.listTopics();
 
-        assertThat(response.getPage().getPageElementCount()).isEqualTo(1);
+        assertThat(response1.getPage().getPageElementCount()).isEqualTo(1);
+        assertThat(response2.getPage().getPageElementCount()).isEqualTo(1);
+    }
+
+    @Test
+    public void testListInstances() throws IOException {
+        InstanceAdminClient.ListInstancesPagedResponse response = spannerClient.listInstances();
+
+        assertThat(response.getPage().getPageElementCount()).isEqualTo(0);
     }
 
     @AfterClass
@@ -63,12 +75,12 @@ public class GrpcCaptureTest {
         Simulation simulation = objectMapper.readValue(capturedData, Simulation.class);
         Set<RequestResponsePair> pairs = simulation.getHoverflyData().getPairs();
 
-        assertThat(pairs).hasSize(2);
+        assertThat(pairs).hasSize(4);
 
         pairs.forEach(pair -> {
             assertThat(pair.getRequest().getHeaders()).isNotEmpty();
             assertThat(pair.getRequest().getMethod().get(0).getValue()).isEqualTo("POST");
-            assertThat(pair.getRequest().getDestination().get(0).getValue()).isEqualTo("pubsub.googleapis.com:443");
+            assertThat(pair.getRequest().getDestination().get(0).getValue()).asString().contains(".googleapis.com:443");
             assertThat(pair.getRequest().getHeaders().get("Content-Type").get(0).getValue()).isEqualTo("application/grpc");
             assertThat(pair.getResponse().getStatus()).isEqualTo(200);
             assertThat(pair.getResponse().getHeaders().get("Grpc-Status")).containsOnly("0");
