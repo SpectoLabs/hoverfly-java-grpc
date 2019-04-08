@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import static io.specto.hoverfly.junit.core.HoverflyConfig.remoteConfigs;
 import static java.nio.charset.Charset.defaultCharset;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +27,8 @@ public class GrpcCaptureTest {
 
 
     private static Hoverfly hoverfly = new Hoverfly(new GrpcConfig().captureAllHeaders(), HoverflyMode.CAPTURE);
+//    private static Hoverfly hoverfly = new Hoverfly(remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888), HoverflyMode.CAPTURE);
+
 
     @BeforeClass
     public static void setUp() {
@@ -60,6 +63,15 @@ public class GrpcCaptureTest {
         assertThat(response.getPage().getPageElementCount()).isEqualTo(0);
     }
 
+    @Test
+    public void testListTimeSeries() throws Exception {
+
+        StackDriverClient stackDriverClient = StackDriverClient.newInstance();
+
+        stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
+        stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
+    }
+
     @AfterClass
     public static void after() throws Exception {
 
@@ -75,7 +87,7 @@ public class GrpcCaptureTest {
         Simulation simulation = objectMapper.readValue(capturedData, Simulation.class);
         Set<RequestResponsePair> pairs = simulation.getHoverflyData().getPairs();
 
-        assertThat(pairs).hasSize(4);
+        assertThat(pairs).hasSize(6);
 
         pairs.forEach(pair -> {
             assertThat(pair.getRequest().getHeaders()).isNotEmpty();
