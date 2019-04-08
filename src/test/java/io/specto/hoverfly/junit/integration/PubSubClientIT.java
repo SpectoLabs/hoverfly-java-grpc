@@ -27,6 +27,16 @@ public class PubSubClientIT {
     }
 
     @Test
+    public void testListSubscriptionsMultipleTimes() throws Exception {
+
+        SubscriptionAdminClient.ListSubscriptionsPagedResponse response1 = pubSubClient.listSubscriptions();
+        SubscriptionAdminClient.ListSubscriptionsPagedResponse response2 = pubSubClient.listSubscriptions();
+
+        assertThat(response1.getPage().getPageElementCount()).isEqualTo(0);
+        assertThat(response2.getPage().getPageElementCount()).isEqualTo(0);
+    }
+
+    @Test
     public void testListTopics() throws Exception {
 
         TopicAdminClient.ListTopicsPagedResponse response = pubSubClient.listTopics();
