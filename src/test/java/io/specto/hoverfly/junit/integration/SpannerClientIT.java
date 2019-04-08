@@ -29,6 +29,15 @@ public class SpannerClientIT {
     }
 
     @Test
+    public void testListInstancesMultipleTimes() throws IOException {
+        InstanceAdminClient.ListInstancesPagedResponse response1 = spannerClient.listInstances();
+        InstanceAdminClient.ListInstancesPagedResponse response2 = spannerClient.listInstances();
+
+        assertThat(response1.getPage().getPageElementCount()).isEqualTo(1);
+        assertThat(response2.getPage().getPageElementCount()).isEqualTo(1);
+    }
+
+    @Test
     public void testListDatabases() throws IOException {
         DatabaseAdminClient.ListDatabasesPagedResponse response = spannerClient.listDatabases();
 
