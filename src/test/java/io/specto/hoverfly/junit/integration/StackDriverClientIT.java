@@ -29,12 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StackDriverClientIT {
   private ByteArrayOutputStream bout;
-  private PrintStream out;
 
   @Before
   public void setUp() {
     bout = new ByteArrayOutputStream();
-    out = new PrintStream(bout);
+    PrintStream out = new PrintStream(bout);
     System.setOut(out);
   }
 

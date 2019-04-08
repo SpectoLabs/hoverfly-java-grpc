@@ -13,7 +13,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,10 +68,16 @@ public class GrpcCaptureTest {
     @Test
     public void testListTimeSeries() throws Exception {
 
+        ByteArrayOutputStream got = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(got);
+        System.setOut(out);
+
         StackDriverClient stackDriverClient = StackDriverClient.newInstance();
 
         stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
         stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
+
+        assertThat(got.toString()).contains("Got timeseries:");
     }
 
     @AfterClass
