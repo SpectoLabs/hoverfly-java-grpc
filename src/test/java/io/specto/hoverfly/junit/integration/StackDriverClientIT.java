@@ -58,7 +58,6 @@ public class StackDriverClientIT {
     assertThat(got).contains("metricDescriptors/bigquery.googleapis.com/query/count");
   }
 
-  @Ignore
   @Test
   public void testListTimeSeries() throws Exception {
     // Act
@@ -71,7 +70,6 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries:");
   }
 
-  @Ignore
   @Test
   public void testListTimeSeriesHeader() throws Exception {
     // Act
@@ -84,7 +82,6 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries headers:");
   }
 
-  @Ignore
   @Test
   public void testListTimeSeriesAggregate() throws Exception {
     // Act
@@ -97,7 +94,6 @@ public class StackDriverClientIT {
     assertThat(got).contains("Got timeseries:");
   }
 
-  @Ignore
   @Test
   public void testListTimeSeriesReduce() throws Exception {
     // Act
