@@ -78,6 +78,7 @@ public class GrpcCaptureTest {
         stackDriverClient.listTimeSeries("metric.type=\"compute.googleapis.com/instance/cpu/utilization\"");
 
         assertThat(got.toString()).contains("Got timeseries:");
+        assertThat(got.toString()).doesNotContain("Connection reset by peer");
     }
 
     @AfterClass
