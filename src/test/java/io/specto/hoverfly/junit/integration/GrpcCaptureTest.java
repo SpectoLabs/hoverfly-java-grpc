@@ -29,7 +29,7 @@ public class GrpcCaptureTest {
 
 
     private static Hoverfly hoverfly = new Hoverfly(new GrpcConfig().captureAllHeaders(), HoverflyMode.CAPTURE);
-//    private static Hoverfly hoverfly = new Hoverfly(remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888), HoverflyMode.CAPTURE);
+//    private static Hoverfly hoverfly = new Hoverfly(remoteConfigs().host("127.0.0.1").proxyPort(8500).adminPort(8888).captureAllHeaders(), HoverflyMode.CAPTURE);
 
 
     @BeforeClass
