@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.specto:hoverfly-java:0.11.5-SNAPSHOT'
+    compile 'io.specto:hoverfly-java:0.12.0-SNAPSHOT'
     testCompile 'junit:junit:4.12'
     testCompile group: 'com.google.guava', name: 'guava', version: '20.0'
     testCompile 'org.assertj:assertj-core:3.11.1'
