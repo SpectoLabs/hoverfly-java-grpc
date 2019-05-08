@@ -17,7 +17,7 @@ if [[ "${PROJECT_VERSION[0]}" == *"SNAPSHOT" ]]; then
 
     if [ "${IS_RELEASE}" = true ]; then
         echo "Performing a release"
-        ./gradlew :release -Prelease.releaseVersion=${RELEASE_VERSION} -Prelease.newVersion=${NEXT_DEV_VERSION}
+        ./gradlew :release -Prelease.releaseVersion=${RELEASE_VERSION} -Prelease.newVersion=${NEXT_DEV_VERSION} -x test
     else
         echo "Deploying snapshot version"
         ./gradlew uploadArchives
