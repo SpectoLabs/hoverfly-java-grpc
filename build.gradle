@@ -109,7 +109,7 @@ uploadArchives {
                         name 'Tommy Situ'
                         email 'tommy.situ@specto.io'
                         organization 'Specto Labs'
-                        organizationUrl 'http://www.specto.io'
+                        organizationUrl 'https://www.specto.io'
                     }
                 }
             }
