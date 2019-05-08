@@ -54,7 +54,7 @@ class HoverflyConfigValidator {
     }
 
     /**
-     * Looks for a resource on the classpath with the given name
+     * Looks for a license file on the classpath with the given name
      */
     static String findLicenseFileOnClasspath(String filepath) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

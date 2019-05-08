@@ -21,50 +21,32 @@ Following these steps to start using the beta version of hoverfly-java-grpc:
    
      `sudo $JAVA_HOME/bin/keytool -import -alias hoverfly -keystore $JAVA_HOME/jre/lib/security/cacerts -file cert.pem` 
    
-2. Import both `hoverfly-java-grpc` and `hoverfly-java` (version `0.11.5` or above) into your Maven or Gradle build file.
+2. Import both `hoverfly-java-grpc` and `hoverfly-java` (version `0.12.0` or above) into your Maven or Gradle build file.
    
    For Gradle: 
    ```groovy
-   repositories {
-       maven {
-           url 'https://oss.sonatype.org/content/repositories/snapshots'
-       }
-   }
-
     dependencies {
-        testCompile 'io.specto:hoverfly-java-grpc:0.11.5-SNAPSHOT'
-        testCompile 'io.specto:hoverfly-java:0.11.5'
+        testCompile 'io.specto:hoverfly-java-grpc:0.12.0'
+        testCompile 'io.specto:hoverfly-java:0.12.0'
     }
     ```
     
     For Maven: 
     ```xml
-    <repositories>
-        <repository>
-            <id>oss-snapshots</id>
-                <name>OSS Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                </snapshots>
-        </repository>
-    </repositories>
- 
     <dependencies>
         <dependency>
               <groupId>io.specto</groupId>
               <artifactId>hoverfly-java-grpc</artifactId>
-              <version>0.11.5-SNAPSHOT</version>
+              <version>0.12.0</version>
               <scope>test</scope>
         </dependency>
         <dependency>
              <groupId>io.specto</groupId>
              <artifactId>hoverfly-java</artifactId>
-             <version>0.11.5</version>
+             <version>0.12.0</version>
              <scope>test</scope>
        </dependency>
     </dependencies>
- 
     ```
 
    
