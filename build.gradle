@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    compile 'io.specto:hoverfly-java:0.12.0'
+    compileOnly 'io.specto:hoverfly-java:0.12.0'
     testCompile 'junit:junit:4.12'
     testCompile group: 'com.google.guava', name: 'guava', version: '20.0'
     testCompile 'org.assertj:assertj-core:3.11.1'
@@ -30,6 +30,7 @@ dependencies {
     testCompile 'com.google.cloud:google-cloud-monitoring:1.46.0'
     testCompile 'com.google.cloud:google-cloud-pubsub:1.46.0'
     testCompile 'com.google.cloud:google-cloud-spanner:1.10.0'
+    testCompile 'io.specto:hoverfly-java:0.12.0'
 }
 
 ext."release.useAutomaticVersion" = true
