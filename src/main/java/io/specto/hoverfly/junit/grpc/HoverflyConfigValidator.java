@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
