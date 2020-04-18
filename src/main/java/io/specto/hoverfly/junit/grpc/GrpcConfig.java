@@ -18,7 +18,7 @@ public class GrpcConfig extends HoverflyConfig {
     private static final String DEFAULT_LICENCE_FILE_NAME = "hoverfly_license";
     private static final String DEFAULT_BINARY_NAME_FORMAT = "hoverfly2_%s_%s%s";
     private static final LogLevel DEFAULT_LOG_LEVEL = LogLevel.INFO;
-    private Logger hoverflyLogger = LoggerFactory.getLogger("hoverfly-grpc");
+    private final Logger hoverflyLogger = LoggerFactory.getLogger("hoverfly-grpc");
 
 
     @Override

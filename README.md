@@ -1,9 +1,12 @@
 
-# Hoverfly Java gRPC (beta)
+# Hoverfly Java gRPC
+
+![CircleCI](https://img.shields.io/circleci/build/github/SpectoLabs/hoverfly-java-grpc/master)
+![Maven Central](https://img.shields.io/maven-central/v/io.specto/hoverfly-java-grpc)
 
 hoverfly-java-grpc is an extension to [hoverfly-java](https://github.com/SpectoLabs/hoverfly-java) which provides additional configurations for enabling gRPC capture and simulation. 
 
-Following these steps to start using the beta version of hoverfly-java-grpc:
+Following these steps to start using hoverfly-java-grpc:
 
 ## Pre-requisites
 
@@ -82,7 +85,7 @@ Use hoverfly-java-grpc requires a valid license. You need to make sure your lice
 
 Putting the license file under `test/resources` folder is usually sufficient. 
 
-Please email contact@specto.io if you require a new license.
+Please contact [SpectoLabs](https://specto.io/contact/) if you require a license.
 
 
 (c) SpectoLabs 2019.
